@@ -32,9 +32,10 @@ model Product {
 }
 
 model ServiceOrder {
-  id        Int      @id @default(autoincrement())
-  requester String
-  createdAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  requester   String
+  orderNumber String
+  createdAt   DateTime @default(now())
 
   products ServiceOrderProduct[]
 }

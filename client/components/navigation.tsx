@@ -11,12 +11,12 @@ export function Navigation() {
   const navItems = [
     {
       href: "/products",
-      label: "Products",
+      label: "Produtos",
       icon: Package,
     },
     {
       href: "/service-orders",
-      label: "Service Orders",
+      label: "Ordens de Serviço",
       icon: ClipboardList,
     },
   ]
@@ -27,7 +27,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-2">
             <Wrench className="h-8 w-8 text-blue-600" />
-            <span className="text-xl font-bold text-gray-900">ToolCorp Warehouse</span>
+            <span className="text-xl font-bold text-gray-900">ToolCorp Almoxarifado</span>
           </div>
           <div className="flex space-x-1">
             {navItems.map((item) => {

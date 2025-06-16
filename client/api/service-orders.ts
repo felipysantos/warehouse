@@ -1,7 +1,8 @@
 import { API_BASE_URL } from "./config";
 
 export interface ServiceOrderProduct {
-  productId: string;
+  productId: number;
+  productName: string;
   requestedQuantity: number;
 }
 

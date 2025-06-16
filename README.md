@@ -33,6 +33,7 @@ warehouse/
 - NextJs
 - TypeScript
 - Tailwind
+- Pnpm
 
 ## 🛠️ Como rodar o projeto
 

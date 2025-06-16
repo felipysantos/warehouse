@@ -15,6 +15,7 @@ export class ServiceOrderService {
     const serviceOrder = await this.prisma.serviceOrder.create({
       data: {
         requester: data.requester,
+        orderNumber: data.orderNumber,
       },
     });
 
@@ -36,6 +37,7 @@ export class ServiceOrderService {
         noteItems.push({
           serviceOrderId: serviceOrder.id,
           productId: item.productId,
+          productName: product.name,
           requestedQuantity: item.requestedQuantity,
         });
 
@@ -77,7 +79,11 @@ export class ServiceOrderService {
   async findAll() {
     return this.prisma.serviceOrder.findMany({
       include: {
-        products: true,
+        products: {
+          include: {
+            product: true,
+          },
+        },
       },
     });
   }

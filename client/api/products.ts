@@ -5,7 +5,7 @@ export interface Product {
   name: string;
   code: string;
   quantity: number;
-  status: "In Stock" | "Low Stock" | "Out of Stock";
+  status: "Em estoque" | "Baixo estoque" | "Sem estoque";
 }
 
 export const productsApi = {

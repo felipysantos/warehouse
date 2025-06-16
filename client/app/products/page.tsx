@@ -56,11 +56,11 @@ export default function ProductsPage() {
 
   const getStatusColor = (status: Product["status"]) => {
     switch (status) {
-      case "In Stock":
+      case "Em estoque":
         return "bg-green-100 text-green-800"
-      case "Low Stock":
+      case "Baixo estoque":
         return "bg-yellow-100 text-yellow-800"
-      case "Out of Stock":
+      case "Sem estoque":
         return "bg-red-100 text-red-800"
       default:
         return "bg-gray-100 text-gray-800"
@@ -68,9 +68,9 @@ export default function ProductsPage() {
   }
 
   const getStatus = (quantity: number): Product["status"] => {
-    if (quantity === 0) return "Out of Stock"
-    if (quantity <= 10) return "Low Stock"
-    return "In Stock"
+    if (quantity === 0) return "Sem estoque"
+    if (quantity <= 50) return "Baixo estoque"
+    return "Em estoque"
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -128,7 +128,7 @@ export default function ProductsPage() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading products...</p>
+          <p className="text-gray-600">Carregando produtos...</p>
         </div>
       </div>
     )
@@ -137,7 +137,7 @@ export default function ProductsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Produtos</h1>
         <Dialog
           open={isDialogOpen}
           onOpenChange={(open) => {
@@ -148,7 +148,7 @@ export default function ProductsPage() {
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Product
+              Adicionar Produto
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
@@ -162,7 +162,7 @@ export default function ProductsPage() {
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="name" className="text-right">
-                    Name
+                    Nome
                   </Label>
                   <Input
                     id="name"
@@ -174,7 +174,7 @@ export default function ProductsPage() {
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="code" className="text-right">
-                    Code
+                    Código
                   </Label>
                   <Input
                     id="code"
@@ -186,7 +186,7 @@ export default function ProductsPage() {
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="quantity" className="text-right">
-                    Quantity
+                    Quantidade
                   </Label>
                   <Input
                     id="quantity"
@@ -201,7 +201,7 @@ export default function ProductsPage() {
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button type="submit">{editingProduct ? "Update" : "Create"}</Button>
               </DialogFooter>
@@ -214,7 +214,7 @@ export default function ProductsPage() {
         <div className="flex items-center space-x-2">
           <Search className="h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Search products..."
+            placeholder="Buscar item..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="max-w-sm"
@@ -225,11 +225,11 @@ export default function ProductsPage() {
       {products.length === 0 ? (
         <div className="text-center py-12">
           <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No products in stock</h3>
-          <p className="text-gray-500 mb-6">Get started by adding your first product to the inventory.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Sem produtos em estoque</h3>
+          <p className="text-gray-500 mb-6">Adicione produtos no inventário.</p>
           <Button onClick={() => setIsDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Add First Product
+            Adicionar Primeiro Produto
           </Button>
         </div>
       ) : (
@@ -237,9 +237,9 @@ export default function ProductsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Code</TableHead>
-                <TableHead>Quantity</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead>Código</TableHead>
+                <TableHead>Quantidade</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -251,7 +251,7 @@ export default function ProductsPage() {
                   <TableCell>{product.code}</TableCell>
                   <TableCell>{product.quantity}</TableCell>
                   <TableCell>
-                    <Badge className={getStatusColor(product.status)}>{product.status}</Badge>
+                    <Badge className={getStatusColor(getStatus(product.quantity))}>{getStatus(product.quantity)}</Badge>
                   </TableCell>
                   <TableCell>
                     <div className="flex space-x-2">

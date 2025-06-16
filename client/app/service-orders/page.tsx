@@ -29,7 +29,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Plus, Edit, Trash2, Search, X, ClipboardList } from "lucide-react";
 import {
   serviceOrdersApi,
@@ -37,6 +36,7 @@ import {
   type ServiceOrderProduct,
 } from "@/api/service-orders";
 import { productsApi, type Product } from "@/api/products";
+import moment from "moment";
 
 export default function ServiceOrdersPage() {
   const [serviceOrders, setServiceOrders] = useState<ServiceOrder[]>([]);
@@ -147,9 +147,8 @@ export default function ServiceOrdersPage() {
     setSelectedProducts([
       ...selectedProducts,
       {
-        productId: "",
+        productId: 0,
         productName: "",
-        productCode: "",
         requestedQuantity: 1,
       },
     ]);
@@ -166,18 +165,19 @@ export default function ServiceOrdersPage() {
   ) => {
     const updated = [...selectedProducts];
     if (field === "productId") {
-      const product = availableProducts.find((p) => p.id === value);
+      const product = availableProducts.find((p) => p.name === value);
       if (product) {
         updated[index] = {
           ...updated[index],
-          productId: product.id,
+          productId: Number(product.id),
           productName: product.name,
-          productCode: product.code,
         };
+        console.log(product);
       }
     } else {
-      updated[index] = { ...updated[index], [field]: value };
+      updated[index] = { ...updated[index], [field]: Number(value) };
     }
+    console.log(updated, index, field, value);
     setSelectedProducts(updated);
   };
 
@@ -197,7 +197,7 @@ export default function ServiceOrdersPage() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading service orders...</p>
+          <p className="text-gray-600">Carregando ordens de serviço...</p>
         </div>
       </div>
     );
@@ -217,7 +217,7 @@ export default function ServiceOrdersPage() {
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()}>
               <Plus className="h-4 w-4 mr-2" />
-              Create Service Order
+              Criar Ordem de Serviço
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
@@ -237,7 +237,7 @@ export default function ServiceOrdersPage() {
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="orderNumber" className="text-right">
-                    Order #
+                    OS #
                   </Label>
                   <Input
                     id="orderNumber"
@@ -252,7 +252,7 @@ export default function ServiceOrdersPage() {
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="requester" className="text-right">
-                    Requester
+                    Requisitante
                   </Label>
                   <Input
                     id="requester"
@@ -264,31 +264,9 @@ export default function ServiceOrdersPage() {
                     required
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="status" className="text-right">
-                    Status
-                  </Label>
-                  <Select
-                    value={formData.status}
-                    onValueChange={(value: ServiceOrder["status"]) =>
-                      setFormData({ ...formData, status: value })
-                    }
-                  >
-                    <SelectTrigger className="col-span-3">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                      <SelectItem value="In Progress">In Progress</SelectItem>
-                      <SelectItem value="Completed">Completed</SelectItem>
-                      <SelectItem value="Cancelled">Cancelled</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
                 <div className="col-span-4">
                   <div className="flex items-center justify-between mb-2">
-                    <Label>Products</Label>
+                    <Label>Produtos</Label>
                     <Button
                       type="button"
                       variant="outline"
@@ -296,7 +274,7 @@ export default function ServiceOrdersPage() {
                       onClick={addProduct}
                     >
                       <Plus className="h-4 w-4 mr-1" />
-                      Add Product
+                      Adicionar item{" "}
                     </Button>
                   </div>
                   <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -306,7 +284,6 @@ export default function ServiceOrdersPage() {
                         className="flex items-center gap-2 p-2 border rounded"
                       >
                         <Select
-                          value={selectedProduct.productId}
                           onValueChange={(value) =>
                             updateSelectedProduct(index, "productId", value)
                           }
@@ -316,8 +293,8 @@ export default function ServiceOrdersPage() {
                           </SelectTrigger>
                           <SelectContent>
                             {availableProducts.map((product) => (
-                              <SelectItem key={product.id} value={product.id}>
-                                {product.name} ({product.code})
+                              <SelectItem key={product.id} value={product.name}>
+                                {product.name}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -351,10 +328,10 @@ export default function ServiceOrdersPage() {
               </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button type="submit" disabled={selectedProducts.length === 0}>
-                  {editingServiceOrder ? "Update" : "Create"}
+                  {editingServiceOrder ? "Atualizar" : "Criar"}
                 </Button>
               </DialogFooter>
             </form>
@@ -366,7 +343,7 @@ export default function ServiceOrdersPage() {
         <div className="flex items-center space-x-2">
           <Search className="h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Search service orders..."
+            placeholder="Buscar OS..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="max-w-sm"
@@ -378,14 +355,14 @@ export default function ServiceOrdersPage() {
         <div className="text-center py-12">
           <ClipboardList className="h-16 w-16 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No service orders found
+            Sem ordens de serviço.
           </h3>
           <p className="text-gray-500 mb-6">
-            Create your first service order to get started.
+            Para começar, crie sua primeira ordem de serviço.
           </p>
           <Button onClick={() => setIsDialogOpen(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Create First Service Order
+            Criar primeira ordem de serviço
           </Button>
         </div>
       ) : (
@@ -393,11 +370,10 @@ export default function ServiceOrdersPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order #</TableHead>
-                <TableHead>Requester</TableHead>
-                <TableHead>Products</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>OS #</TableHead>
+                <TableHead>Requisitante</TableHead>
+                <TableHead>Itens</TableHead>
+                <TableHead>Criado</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -411,19 +387,21 @@ export default function ServiceOrdersPage() {
                   <TableCell>
                     <div className="space-y-1">
                       {serviceOrder.products.map((product, index) => (
-                        <div key={index} className="text-sm">
-                          {product.productName} ({product.productCode}) - Qty:{" "}
+                        <div key={index} className="text-sm flex flex-1 ">
+                          {/* @ts-ignore */}
+                          {product.product.name} - Qty:
                           {product.requestedQuantity}
                         </div>
                       ))}
                     </div>
                   </TableCell>
+
                   <TableCell>
-                    <Badge className={getStatusColor(serviceOrder.status)}>
-                      {serviceOrder.status}
-                    </Badge>
+                    {/* @ts-ignore */}
+                    {moment(serviceOrder.createdAt).format(
+                      "DD/MM/YYYY [às] HH:mm"
+                    )}
                   </TableCell>
-                  <TableCell>{serviceOrder.createdDate}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <Button
