@@ -127,4 +127,4 @@ Sinta-se livre para utilizá-lo, modificá-lo e distribuí-lo conforme necessár
 ## Contato
 
 Desenvolvido por **Felipy Santos**.  
-Conecte-se comigo no (LinkedIn)[https://www.linkedin.com/in/felipy-santos/] ou em outras redes para trocarmos ideias sobre desenvolvimento, infraestrutura e DevOps.
+Conecte-se comigo no [LinkedIn](https://www.linkedin.com/in/felipy-santos/) ou em outras redes para trocarmos ideias sobre desenvolvimento, infraestrutura e DevOps.
