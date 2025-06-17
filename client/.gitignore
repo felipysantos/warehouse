@@ -1,0 +1,74 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.cache/
+
+# Next.js
+.next/
+out/
+
+# Env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+*.log.*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor e IDE
+.vscode/
+.idea/
+*.swp
+
+# Testes
+coverage/
+
+# Build temporário
+dist/
+
+# Arquivos de exportação
+exported/
+
+# Dependências locais
+.pnpm-store/
+
+# MacOS
+*.DS_Store
+
+# Linux
+*.pid
+*.seed
+*.pid.lock
+
+# Windows
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Next.js telemetry
+.next/telemetry/
+
+# Optional: se usar vercel
+.vercel/
+
+# Optional: se usar netlify
+.netlify/
+
+# Optional: se usar docker
+docker-compose.override.yml
+*.local
+
+# Outros
+*.tgz
+*.zip
