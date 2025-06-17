@@ -1,13 +1,13 @@
 # 🏗️ Warehouse Management System
 
-Sistema de gerenciamento de almoxarifado de uma fábrica de ferramentaria.
+Sistema de gerenciamento de almoxarifado para uma fábrica de ferramentaria.
 
 ## 📂 Estrutura do Projeto
 
 ```
 warehouse/
 ├── api/       → Backend (NestJS + Prisma + PostgreSQL)
-├── client/    → Frontend (Angular)
+├── client/    → Frontend (NextJS)
 ```
 
 ## 🚀 Funcionalidades
@@ -16,7 +16,7 @@ warehouse/
 - 📝 Criação de Ordens de Serviço com controle de estoque
 - ✅ Validação de estoque na emissão da ordem
 - 🔒 API REST segura e robusta
-- 🔧 Frontend em Angular
+- 🔧 Frontend em NextJS
 
 ## 🏗️ Tecnologias Utilizadas
 
@@ -66,7 +66,7 @@ pnpm exec prisma db seed
 pnpm run start:dev
 ```
 
-### 🎨 Frontend (Angular)
+### 🎨 Frontend (NextJS)
 
 ```bash
 # Acesse a pasta do frontend
@@ -99,5 +99,4 @@ Sinta-se livre para usá-lo, modificá-lo e distribuí-lo.
 
 ## 🤝 Contato
 
-Feito com honra e bravura por **Mestre Lypozo** ⚔️  
-Entre em contato pelos reinos digitais!
+Feito com honra e bravura por **Felipy Santos** ⚔️

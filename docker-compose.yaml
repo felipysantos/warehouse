@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=warehouse_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - app-network
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/warehouse_db"
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "4000:3000"
+    restart: unless-stopped
+    networks:
+      - app-network
+    depends_on:
+      - api
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  pgdata:

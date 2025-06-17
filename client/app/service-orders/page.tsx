@@ -102,10 +102,19 @@ export default function ServiceOrdersPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const productsToSend: ServiceOrderProduct[] = selectedProducts.map(
+      (selected) => {
+        return {
+          productId: selected.productId,
+          requestedQuantity: selected.requestedQuantity,
+        };
+      }
+    );
+
     try {
       const serviceOrderData = {
         ...formData,
-        products: selectedProducts,
+        products: productsToSend,
         createdDate: new Date().toISOString().split("T")[0],
       };
 
@@ -177,7 +186,6 @@ export default function ServiceOrdersPage() {
     } else {
       updated[index] = { ...updated[index], [field]: Number(value) };
     }
-    console.log(updated, index, field, value);
     setSelectedProducts(updated);
   };
 
@@ -206,7 +214,7 @@ export default function ServiceOrdersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Service Orders</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Ordens de Serviço</h1>
         <Dialog
           open={isDialogOpen}
           onOpenChange={(open) => {
@@ -224,20 +232,20 @@ export default function ServiceOrdersPage() {
             <DialogHeader>
               <DialogTitle>
                 {editingServiceOrder
-                  ? "Edit Service Order"
-                  : "Create New Service Order"}
+                  ? "Editar Ordem de Serviço"
+                  : "Criar Nova Ordem de Serviço"}
               </DialogTitle>
               <DialogDescription>
                 {editingServiceOrder
-                  ? "Update the service order information below."
-                  : "Enter the details for the new service order."}
+                  ? "Atualize as informações da ordem de serviço abaixo."
+                  : "Insira os detalhes da nova ordem de serviço."}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
+                <div className="flex flex-1 items-center gap-4">
                   <Label htmlFor="orderNumber" className="text-right">
-                    OS #
+                    OS
                   </Label>
                   <Input
                     id="orderNumber"
@@ -250,7 +258,7 @@ export default function ServiceOrdersPage() {
                     required
                   />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
+                <div className="flex flex-1 items-center gap-4">
                   <Label htmlFor="requester" className="text-right">
                     Requisitante
                   </Label>
@@ -284,12 +292,14 @@ export default function ServiceOrdersPage() {
                         className="flex items-center gap-2 p-2 border rounded"
                       >
                         <Select
+                          // @ts-ignore
+                          value={selectedProduct.product?.name}
                           onValueChange={(value) =>
                             updateSelectedProduct(index, "productId", value)
                           }
                         >
                           <SelectTrigger className="flex-1">
-                            <SelectValue placeholder="Select product" />
+                            <SelectValue placeholder="Selecione um Produto" />
                           </SelectTrigger>
                           <SelectContent>
                             {availableProducts.map((product) => (

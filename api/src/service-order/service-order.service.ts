@@ -37,7 +37,6 @@ export class ServiceOrderService {
         noteItems.push({
           serviceOrderId: serviceOrder.id,
           productId: item.productId,
-          productName: product.name,
           requestedQuantity: item.requestedQuantity,
         });
 
@@ -91,9 +90,6 @@ export class ServiceOrderService {
   async findOne(id: number) {
     const order = await this.prisma.serviceOrder.findUnique({
       where: { id },
-      include: {
-        products: true,
-      },
     });
 
     if (!order) {
@@ -132,6 +128,12 @@ export class ServiceOrderService {
 
   async remove(id: number) {
     await this.findOne(id);
+
+    await this.prisma.serviceOrderProduct.deleteMany({
+      where: {
+        serviceOrderId: id,
+      },
+    });
 
     return this.prisma.serviceOrder.delete({
       where: { id },

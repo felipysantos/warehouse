@@ -56,4 +56,3 @@ tmp/
 # Lockfiles antigos
 package-lock.json
 yarn.lock
-pnpm-lock.yaml
