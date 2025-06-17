@@ -1,24 +1,26 @@
-# 🏗️ Warehouse Management System
+
+# Warehouse Management System
 
 Sistema de gerenciamento de almoxarifado para uma fábrica de ferramentaria.
 
-## 📂 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 warehouse/
 ├── api/       → Backend (NestJS + Prisma + PostgreSQL)
 ├── client/    → Frontend (NextJS)
+├── k8s/       → Manifests do Kubernetes
 ```
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
-- 📦 Gestão de Produtos (nome, código, quantidade)
-- 📝 Criação de Ordens de Serviço com controle de estoque
-- ✅ Validação de estoque na emissão da ordem
-- 🔒 API REST segura e robusta
-- 🔧 Frontend em NextJS
+- Gestão de produtos (nome, código, quantidade)
+- Criação de ordens de serviço com controle de estoque
+- Validação de estoque na emissão da ordem
+- API REST segura e robusta
+- Frontend desenvolvido em NextJS
 
-## 🏗️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 ### Backend (`/api`)
 
@@ -30,56 +32,81 @@ warehouse/
 
 ### Frontend (`/client`)
 
-- NextJs
+- NextJS
 - TypeScript
-- Tailwind
-- Pnpm
-
-## 🛠️ Como rodar o projeto
-
-### 🔗 Pré-requisitos
-
-- Node.js
+- TailwindCSS
 - pnpm
-- PostgreSQL
 
-### 🚩 Backend
+### Infraestrutura
+
+- Docker
+- Docker Compose
+- Kubernetes (K8s)
+
+## Como rodar o projeto
+
+### Rodando com Docker Compose
 
 ```bash
-# Acesse a pasta do backend
-cd api
+docker-compose up --build
+```
 
-# Instale as dependências
+O backend ficará disponível em `http://localhost:3000`  
+O frontend ficará disponível em `http://localhost:4000`
+
+O PostgreSQL roda internamente no container e é automaticamente provisionado.
+
+### Rodando localmente (sem Docker)
+
+#### Backend
+
+```bash
+cd api
 pnpm install
 
-# Configure o banco
 cp .env.example .env
-# Edite as variáveis do banco no .env
+# Edite as variáveis de ambiente, especialmente o DATABASE_URL
 
-# Crie o banco e rode as migrations
 pnpm exec prisma migrate dev
+pnpm run seed # opcional
 
-# Rode os seeds (opcional)
-pnpm exec prisma db seed
-
-# Inicie o backend
 pnpm run start:dev
 ```
 
-### 🎨 Frontend (NextJS)
+#### Frontend
 
 ```bash
-# Acesse a pasta do frontend
 cd client
-
-# Instale as dependências
 pnpm install
 
-# Rode o servidor de desenvolvimento
-pnpm dev
+pnpm run dev
 ```
 
-## 🗺️ Rotas da API
+## Deploy no Kubernetes
+
+### Pré-requisitos
+
+- Minikube, k3d, Kind ou cluster Kubernetes configurado
+- kubectl instalado
+
+### Passos
+
+1. Crie os deployments e services
+
+```bash
+kubectl apply -f k8s/
+```
+
+2. Verifique os pods e serviços
+
+```bash
+kubectl get pods
+kubectl get svc
+```
+
+3. Acesse o frontend utilizando o NodePort informado ou configure um Ingress para uma abordagem mais profissional.
+
+## Rotas da API
 
 | Método | Endpoint             | Descrição                  |
 | ------ | -------------------- | -------------------------- |
@@ -92,11 +119,12 @@ pnpm dev
 | PATCH  | `/service-order/:id` | Atualizar ordem de serviço |
 | DELETE | `/service-order/:id` | Deletar ordem de serviço   |
 
-## 🔐 Licença
+## Licença
 
-Este projeto está sob a licença **MIT**.  
-Sinta-se livre para usá-lo, modificá-lo e distribuí-lo.
+Este projeto está sob a licença MIT.  
+Sinta-se livre para utilizá-lo, modificá-lo e distribuí-lo conforme necessário.
 
-## 🤝 Contato
+## Contato
 
-Feito com honra e bravura por **Felipy Santos** ⚔️
+Desenvolvido por **Felipy Santos**.  
+Conecte-se comigo no (LinkedIn)[https://www.linkedin.com/in/felipy-santos/] ou em outras redes para trocarmos ideias sobre desenvolvimento, infraestrutura e DevOps.
